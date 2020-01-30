@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>test pop-up </title>
+</head>
+
+<style>
+	
+	
+</style>
+	
+	
+<body>
+	
+<div>
+  <canvas id="circle" width="400" height="400" lineWidth = "10" strokStyle = "purple" fillStyle = "black" data = "60"></canvas> 
+</div>
+	
+
+
+
+	
+</body>
+	
+	
+	
+	<script>
+	
+	var canvas = this.document.getElementById("circle");
+	var context = canvas.getContext("2d");
+	var width = canvas.width;
+	var height = canvas.height;
+
+	var start = -(Math.PI / 2), load = 0, end = 100, color = "#4799B7", colorText = "#4799B7", line = 5;
+
+
+	// get end of the circle from html use the attribute data
+	if(canvas.getAttribute('data')){
+		if(canvas.getAttribute('data').length !=0 ){
+			end = canvas.getAttribute('data');
+		}
+
+	}
+
+
+	// get color of circle from html use attribute strokStyle
+	if(canvas.getAttribute('strokStyle')){
+		 if(canvas.getAttribute('strokStyle').length !=0 ){
+			color = canvas.getAttribute('strokStyle');
+		}
+
+	}
+
+	// get color of text from html use attribute fillStyle
+
+	if(canvas.getAttribute('fillStyle')){
+		 if(canvas.getAttribute('fillStyle').length !=0 ){
+			colorText = canvas.getAttribute('fillStyle');
+		}
+
+	}
+
+	// get lineWidth from html use attribute lineWidth
+	if(canvas.getAttribute('lineWidth')){
+		 if(canvas.getAttribute('lineWidth').length !=0 ){
+			line = canvas.getAttribute('lineWidth');
+		}
+
+	}
+
+	// function draw circel
+	function draw_circle(){
+
+	context.clearRect(0, 0, width, height);
+	context.strokeStyle = color;
+	context.fillStyle = colorText;
+	context.beginPath();
+	context.arc(width / 2, height /2, width/2 - line, start , start + ((Math.PI / 2) * 4) * (load / 100)  , false);
+	context.lineWidth = line;
+
+	context.stroke();
+	context.fillText(load+"%", (width/2) - 25, height/2, width);
+		context.font = "24px tahoma, sans-serif";
+
+	load += 1;
+	if (load > end){
+		this.clearInterval(x);
+
+	}
+	}
+	var x = this.setInterval(draw_circle, 25);
+
+	</script>
+	
+	
+	
+</html>

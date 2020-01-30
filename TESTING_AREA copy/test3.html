@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Progressbar HTML-CSS only</title>
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen">
+  </head>
+	
+	<style>
+	
+		#value1{
+			width: 0%; /*Value of the progressbar1*/
+		}
+		#value2{
+			width: 10%; /*Value of the progressbar2*/
+		}
+		#value3{
+			width: 25%; /*Value of the progressbar3*/
+		}
+		#value4{
+			width: 50%; /*Value of the progressbar4*/
+		}
+		#value5{
+			width: 100%; /*Value of the progressbar5*/
+		}
+
+
+		.progressbar{
+			width: 1000px; /*Width of the progressbars*/
+			background-color: #111111; /*Background-color of progressbar*/
+			-webkit-border-radius: 9999px;
+			-moz-border-radius: 9999px;
+			border-radius: 9999px;
+		}
+		.progress{
+			background-color: #05658B; /*Background-color of the progress*/
+			color: #ccd; /*Textcolor (Progress in percentage)*/
+			width: 0;
+			-webkit-border-radius: 9999px;
+			-moz-border-radius: 9999px;
+			border-radius: 9999px;
+		}
+		.value{
+				margin-left: 45%;
+		}
+
+		/*Optional*/
+		body{
+			background-color: #333;
+			color: #ddd;
+			font-family: Calibri,Arial,Helveticia;
+		}
+
+		  }
+		#value3{
+		  width:0%;
+		  }
+		#value4{
+		  width:0%;
+		  }
+		#value5{
+		  width:0%;
+		  }
+
+	</style>
+	
+	
+	
+	
+  <body>
+	  
+    <h1>Progressbars HTML-CSS only</h1>
+
+    <p>Progress 1: </p><div class="progressbar"><div class="progress" id="value1"><span class="value">0%</span></div></div>
+    <p>Progress 2: </p><div class="progressbar"><div class="progress" id="value2"><span class="value">10%</span></div></div>
+    <p>Progress 3: </p><div class="progressbar"><div class="progress" id="value3"><span class="value">25%</span></div></div>
+    <p>Progress 4: </p><div class="progressbar"><div class="progress" id="value4"><span class="value">50%</span></div></div>
+    <p>Progress 5: </p><div class="progressbar"><div class="progress" id="value5"><span class="value">100%</span></div></div>
+	  
+  </body>
+</html>

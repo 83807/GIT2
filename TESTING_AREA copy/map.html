@@ -1,0 +1,823 @@
+<!doctype html>
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>test maps</title>
+	<link href="https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css" rel="stylesheet"/>
+	
+	<style>
+		body { margin: 0; padding: 0; }
+		#map { position: absolute; top: 0; bottom: 0; width: 100%; };
+		
+		.mapboxgl-popup {
+		max-width: 400px;
+		font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+		}	
+		
+		#bar {
+			position: fixed;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			height: 30px;
+			line-height: 30px;
+			color: black;
+			text-align: left;
+			background: #3e4042;
+			box-shadow: 0px 0px 10px black;
+			z-index: 99;
+		}
+		
+		#bar2 {
+			
+			position: fixed;
+			background: #3e4042;
+			width: 100%;
+			height: 30px;
+			line-height: 30px;
+			color: black;
+			text-align: left;
+			box-shadow: 0px 0px 10px black;
+			z-index: 99;
+		}
+		
+
+	</style>
+	
+</head>
+
+<body>
+	
+	<div id="map"></div>	
+	
+	<div id="bar">&nbsp;&nbsp;© Nina & Dave</div>
+	<div id="bar2">&nbsp;&nbsp;© Albadit & Risu</div>
+	
+		
+</body>
+	
+	<script src="https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js"></script>
+	
+	<script>
+		mapboxgl.accessToken = 'pk.eyJ1IjoiYWxiYWRpdCIsImEiOiJjazU1YmllcWgwYnV1M2ttcWlqaTBtdG00In0.W9tjPB18bJHoX2xynecX7Q';
+		var map = new mapboxgl.Map({
+		container: 'map',
+		style: 'mapbox://styles/albadit/ck5chijo643ot1cmsyrtcuask',
+		center: [4.89, 52.37], // starting position
+		zoom: 3.80 // starting zoom
+		});
+		
+		// disable map rotation using right click + drag
+		map.dragRotate.disable();
+ 
+		// disable map rotation using touch rotation gesture
+		map.touchZoomRotate.disableRotation();
+		
+		// disable map zoom when using scroll
+		map.scrollZoom.disable();
+		
+			map.on('load', function() {
+				map.loadImage(
+				'png/china.png',
+				function(error, image) {
+					if (error) throw error;
+						map.addImage('china', image);
+						map.addLayer({
+							'id': 'points',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+								
+								
+									'type': 'Feature',
+					
+									'properties': {
+									'description':
+									'<strong>China</strong><p><a href="china.html"> Population Information </a> China has the largest population in the world, with over 1.3 billion people (1,343,239,923) as of July 2012.</p>',
+									'icon': 'china'
+									},
+								
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [116.39, 39.91]
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'china',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});
+			
+		// When a click event occurs on a feature in the places layer, open a popup at the
+		// location of the feature, with description HTML from its properties.
+		map.on('click', 'points', function(e) {
+		var coordinates = e.features[0].geometry.coordinates.slice();
+		var description = e.features[0].properties.description;
+
+		// Ensure that if the map is zoomed out such that multiple
+		// copies of the feature are visible, the popup appears
+		// over the copy being pointed to.
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+		coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+
+		new mapboxgl.Popup()
+		.setLngLat(coordinates)
+		.setHTML(description)
+		.addTo(map);
+		});
+
+		// Change the cursor to a pointer when the mouse is over the places layer.
+		map.on('mouseenter', 'points', function() {
+		map.getCanvas().style.cursor = 'pointer';
+		});
+
+		// Change it back to a pointer when it leaves.
+		map.on('mouseleave', 'points', function() {
+		map.getCanvas().style.cursor = '';
+		});
+		
+				map.on('load', function() {
+				map.loadImage(
+				'png/india.png',
+				function(error, image) {
+					if (error) throw error;	
+						map.addImage('india', image);
+						map.addLayer({
+							'id': 'points2',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+									'type': 'Feature',
+								
+									'properties': {
+									'description':
+									'<strong>India</strong><p><a href="india.html"> Population Information </a> India the land of snake charmers and holy saints used to be an island more than 100 million years ago? About 50 million years ago, it collided with the Asian continent and thus was born the Himalayas. Fascinating, isn&apos;t it? With over a billion people from all kinds of religions and ethnicities, India is not only the second most populated country, but it also has in store some mind-blowing facts and achievements under its belt. </p>',
+									'icon': 'china'
+									},
+								
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [77.20, 26.61]
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'india',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});
+		
+			
+		// When a click event occurs on a feature in the places layer, open a popup at the
+		// location of the feature, with description HTML from its properties.
+		map.on('click', 'points2', function(e) {
+		var coordinates = e.features[0].geometry.coordinates.slice();
+		var description = e.features[0].properties.description;
+
+		// Ensure that if the map is zoomed out such that multiple
+		// copies of the feature are visible, the popup appears
+		// over the copy being pointed to.
+		while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+		coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+		}
+
+		new mapboxgl.Popup()
+		.setLngLat(coordinates)
+		.setHTML(description)
+		.addTo(map);
+		});
+
+		// Change the cursor to a pointer when the mouse is over the places layer.
+		map.on('mouseenter', 'points2', function() {
+		map.getCanvas().style.cursor = 'pointer';
+		});
+
+		// Change it back to a pointer when it leaves.
+		map.on('mouseleave', 'points2', function() {
+		map.getCanvas().style.cursor = '';
+		});
+		
+				map.on('load', function() {
+				map.loadImage(
+				'png/united-states.png',
+				function(error, image) {
+					if (error) throw error;
+						map.addImage('USA', image);
+						map.addLayer({
+							'id': 'points3',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+									'type': 'Feature',
+								
+									'properties': {
+									'description':
+									'<strong> United States Of America </strong><p><a href="usa.html"> Population Information </a> In the US, pizza surpasses burgers as the nations favorite fast food. According to the pizza industry trade organization in the US, about 100 acres of pizza is served every day. According to a survey done by the American Customer Satisfaction Index, Americans tend to be more satisfied by pizza than by burgers.</p>',
+									'icon': 'china'
+									},
+								
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [-77.03, 38.89]
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'USA',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});
+		
+				// When a click event occurs on a feature in the places layer, open a popup at the
+				// location of the feature, with description HTML from its properties.
+				map.on('click', 'points3', function(e) {
+				var coordinates = e.features[0].geometry.coordinates.slice();
+				var description = e.features[0].properties.description;
+
+				// Ensure that if the map is zoomed out such that multiple
+				// copies of the feature are visible, the popup appears
+				// over the copy being pointed to.
+				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+				}
+
+				new mapboxgl.Popup()
+				.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo(map);
+				});
+
+				// Change the cursor to a pointer when the mouse is over the places layer.
+				map.on('mouseenter', 'points3', function() {
+				map.getCanvas().style.cursor = 'pointer';
+				});
+
+				// Change it back to a pointer when it leaves.
+				map.on('mouseleave', 'points3', function() {
+				map.getCanvas().style.cursor = '';
+				});
+		
+		
+				map.on('load', function() {
+				map.loadImage(
+				'png/indonesia.png',
+				function(error, image) {
+					if (error) throw error;
+						map.addImage('Indonesia', image);
+						map.addLayer({
+							'id': 'points4',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+									'type': 'Feature',
+								
+									'properties': {
+									'description':
+									'<strong> Indonesia </strong><p><a href="indonesia.html"> Population Information </a> ndonesia is celebrating 72 years of independence today. So why not learn a little more about the world&asop;s fourth biggest country? </p>',
+									'icon': 'china'
+									},
+								
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [106.82, -6.17] 
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'Indonesia',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});	
+		
+				// When a click event occurs on a feature in the places layer, open a popup at the
+				// location of the feature, with description HTML from its properties.
+				map.on('click', 'points4', function(e) {
+				var coordinates = e.features[0].geometry.coordinates.slice();
+				var description = e.features[0].properties.description;
+
+				// Ensure that if the map is zoomed out such that multiple
+				// copies of the feature are visible, the popup appears
+				// over the copy being pointed to.
+				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+				}
+
+				new mapboxgl.Popup()
+				.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo(map);
+				});
+
+				// Change the cursor to a pointer when the mouse is over the places layer.
+				map.on('mouseenter', 'points4', function() {
+				map.getCanvas().style.cursor = 'pointer';
+				});
+
+				// Change it back to a pointer when it leaves.
+				map.on('mouseleave', 'points4', function() {
+				map.getCanvas().style.cursor = '';
+				});	
+		
+				map.on('load', function() {
+				map.loadImage(
+				'png/brazil.png',
+				function(error, image) {
+					if (error) throw error;
+						map.addImage('brazil', image);
+						map.addLayer({
+							'id': 'points5',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+									'type': 'Feature',
+								
+									'properties': {
+									'description':
+									'<strong> Brazil </strong><p><a href="brazil.html"> Population Information </a> The country was inhabited by mainly semi-nomadic tribes before the arrival of the colonialists. The land was claimed by Portuguese and settlers founded the colony in 1532. by the 17th centre sugar cane was the main export and the slave trade brought many African slaves to the country. The Brazilian gold rush attracted many fortune seekers to the country. Brazil declared independence from Portugal in 1822, this was officially recognised by the Portuguese only three years later! Brazil was ruled by various Brazilian Emperors until in 1889 it was finally declared a republic. Brazil&asop;s president is Michel Temer since August 2016.</p>',
+									'icon': 'china'
+									},
+								
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [-47.88, -15.79]
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'brazil',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});
+		
+				// When a click event occurs on a feature in the places layer, open a popup at the
+				// location of the feature, with description HTML from its properties.
+				map.on('click', 'points5', function(e) {
+				var coordinates = e.features[0].geometry.coordinates.slice();
+				var description = e.features[0].properties.description;
+
+				// Ensure that if the map is zoomed out such that multiple
+				// copies of the feature are visible, the popup appears
+				// over the copy being pointed to.
+				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+				}
+
+				new mapboxgl.Popup()
+				.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo(map);
+				});
+
+				// Change the cursor to a pointer when the mouse is over the places layer.
+				map.on('mouseenter', 'points5', function() {
+				map.getCanvas().style.cursor = 'pointer';
+				});
+
+				// Change it back to a pointer when it leaves.
+				map.on('mouseleave', 'points5', function() {
+				map.getCanvas().style.cursor = '';
+				});
+		
+				map.on('load', function() {
+				map.loadImage(
+				'png/pakistan.png',
+				function(error, image) {
+					if (error) throw error;
+						map.addImage('pakistan', image);
+						map.addLayer({
+							'id': 'points6',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+									'type': 'Feature',
+								
+									'properties': {
+									'description':
+									'<strong> Pakistan </strong><p><a href="pakistan.html"> Population Information </a> The name Pakistan was derived from two words Pak and Stan which means ‘land of the pure’ in the Urdu language.</p>',
+									'icon': 'china'
+									},
+								
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [73.09, 33.68] 
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'pakistan',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});	
+	
+				// When a click event occurs on a feature in the places layer, open a popup at the
+				// location of the feature, with description HTML from its properties.
+				map.on('click', 'points6', function(e) {
+				var coordinates = e.features[0].geometry.coordinates.slice();
+				var description = e.features[0].properties.description;
+
+				// Ensure that if the map is zoomed out such that multiple
+				// copies of the feature are visible, the popup appears
+				// over the copy being pointed to.
+				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+				}
+
+				new mapboxgl.Popup()
+				.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo(map);
+				});
+
+				// Change the cursor to a pointer when the mouse is over the places layer.
+				map.on('mouseenter', 'points6', function() {
+				map.getCanvas().style.cursor = 'pointer';
+				});
+
+				// Change it back to a pointer when it leaves.
+				map.on('mouseleave', 'points6', function() {
+				map.getCanvas().style.cursor = '';
+				});
+		
+				map.on('load', function() {
+				map.loadImage(
+				'png/nigeria.png',
+				function(error, image) {
+					if (error) throw error;
+						map.addImage('nigeria', image);
+						map.addLayer({
+							'id': 'points7',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+									'type': 'Feature',
+								
+									'properties': {
+									'description':
+									'<strong> Nigeria </strong><p><a href="nigeria.html"> Population Information </a> Nigeria shares its border with Benin, Chad, Cameroon, and Niger.</p>',
+									'icon': 'china'
+									},
+								
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [7.48, 9.06] 
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'nigeria',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});	
+		
+		// When a click event occurs on a feature in the places layer, open a popup at the
+				// location of the feature, with description HTML from its properties.
+				map.on('click', 'points7', function(e) {
+				var coordinates = e.features[0].geometry.coordinates.slice();
+				var description = e.features[0].properties.description;
+
+				// Ensure that if the map is zoomed out such that multiple
+				// copies of the feature are visible, the popup appears
+				// over the copy being pointed to.
+				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+				}
+
+				new mapboxgl.Popup()
+				.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo(map);
+				});
+
+				// Change the cursor to a pointer when the mouse is over the places layer.
+				map.on('mouseenter', 'points7', function() {
+				map.getCanvas().style.cursor = 'pointer';
+				});
+
+				// Change it back to a pointer when it leaves.
+				map.on('mouseleave', 'points7', function() {
+				map.getCanvas().style.cursor = '';
+				});
+		
+				map.on('load', function() {
+				map.loadImage(
+				'png/bangladesh.png',
+				function(error, image) {
+					if (error) throw error;
+						map.addImage('bangladesh', image);
+						map.addLayer({
+							'id': 'points8',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+									'type': 'Feature',
+								
+									'properties': {
+									'description':
+									'<strong> Bangladesh </strong><p><a href="bangladesh.html"> Population Information </a> Due to their ultimate six seasons, grismo (summer), barsha (rainy), sharat (autumn), hemanto (cool), sheet (winter), and bashonto (spring), Bangladesh is sometimes called “the playground of seasons”.</p>',
+									'icon': 'china'
+									},
+								
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [90.73, 23.76] 
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'bangladesh',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});
+		
+				// When a click event occurs on a feature in the places layer, open a popup at the
+				// location of the feature, with description HTML from its properties.
+				map.on('click', 'points8', function(e) {
+				var coordinates = e.features[0].geometry.coordinates.slice();
+				var description = e.features[0].properties.description;
+
+				// Ensure that if the map is zoomed out such that multiple
+				// copies of the feature are visible, the popup appears
+				// over the copy being pointed to.
+				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+				}
+
+				new mapboxgl.Popup()
+				.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo(map);
+				});
+
+				// Change the cursor to a pointer when the mouse is over the places layer.
+				map.on('mouseenter', 'points8', function() {
+				map.getCanvas().style.cursor = 'pointer';
+				});
+
+				// Change it back to a pointer when it leaves.
+				map.on('mouseleave', 'points8', function() {
+				map.getCanvas().style.cursor = '';
+				});
+		
+				map.on('load', function() {
+				map.loadImage(
+				'png/russia.png',
+				function(error, image) {
+					if (error) throw error;
+						map.addImage('russia', image);
+						map.addLayer({
+							'id': 'points9',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+									'type': 'Feature',
+								
+									'properties': {
+									'description':
+									'<strong> Russia </strong><p><a href="russian.html"> Population Information </a> The world’s most polluted city, Norilsk in Russia not only has a harsh climate with an average temperature of 15.5°F, but is so heavily polluted by heavy metals that it is economically feasible to mine the surface soil.</p>',
+									'icon': 'china'
+									},	
+								
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [37.61, 55.75] //iohihkhkjvjghj
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'russia',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});	
+		
+				// When a click event occurs on a feature in the places layer, open a popup at the
+				// location of the feature, with description HTML from its properties.
+				map.on('click', 'points9', function(e) {
+				var coordinates = e.features[0].geometry.coordinates.slice();
+				var description = e.features[0].properties.description;
+
+				// Ensure that if the map is zoomed out such that multiple
+				// copies of the feature are visible, the popup appears
+				// over the copy being pointed to.
+				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+				}
+
+				new mapboxgl.Popup()
+				.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo(map);
+				});
+
+				// Change the cursor to a pointer when the mouse is over the places layer.
+				map.on('mouseenter', 'points9', function() {
+				map.getCanvas().style.cursor = 'pointer';
+				});
+
+				// Change it back to a pointer when it leaves.
+				map.on('mouseleave', 'points9', function() {
+				map.getCanvas().style.cursor = '';
+				});
+		
+				map.on('load', function() {
+				map.loadImage(
+				'png/mexico.png',
+				function(error, image) {
+					if (error) throw error;
+						map.addImage('mexico', image);
+						map.addLayer({
+							'id': 'points10',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+									'type': 'Feature',
+								
+									'properties': {
+									'description':
+									'<strong> Mexico </strong><p><a href="mexico.html"> Population Information </a> The city is slowly sinking to the depths of the oceans like Atlantis! Well, not really. But Mexico City is sinking at a rate of about 10 inches a year as the city pumps draw water from the lake that supports it. In fact, it has sunk so much that it lost its title as the 7th highest capital city in the world to Yemen and now sits at #8.</p>',
+									'icon': 'china'
+									},
+								
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [-99.17, 19.42] 
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'mexico',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});
+		
+				// When a click event occurs on a feature in the places layer, open a popup at the
+				// location of the feature, with description HTML from its properties.
+				map.on('click', 'points10', function(e) {
+				var coordinates = e.features[0].geometry.coordinates.slice();
+				var description = e.features[0].properties.description;
+
+				// Ensure that if the map is zoomed out such that multiple
+				// copies of the feature are visible, the popup appears
+				// over the copy being pointed to.
+				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+				}
+
+				new mapboxgl.Popup()
+				.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo(map);
+				});
+
+				// Change the cursor to a pointer when the mouse is over the places layer.
+				map.on('mouseenter', 'points10', function() {
+				map.getCanvas().style.cursor = 'pointer';
+				});
+
+				// Change it back to a pointer when it leaves.
+				map.on('mouseleave', 'points10', function() {
+				map.getCanvas().style.cursor = '';
+				});
+		
+				map.on('load', function() {
+				map.loadImage(
+				'png/netherlands.png',
+				function(error, image) {
+					if (error) throw error;
+						map.addImage('netherlands', image);
+						map.addLayer({
+							'id': 'points11',
+							'type': 'symbol',
+							'source': {
+							'type': 'geojson',
+							'data': {
+							'type': 'FeatureCollection',
+							'features': [{
+									'type': 'Feature',
+								
+									'properties': {
+									'description':
+									'<strong> Netherlands </strong><p><a href="netherlands.html"> Population Information </a> The Netherlands’ small size actually makes it the most crowded country in Europe, thanks to the current population being at more than 17 million (as of July 2019). The density is 508 people per square kilometre. In comparison, the United Kingdom has a population density of only 277 people per square kilometre. Over 45% of the total population of the Netherlands live in the Randstad, which makes up the cities of Amsterdam, The Hague, Rotterdam and Utrecht.</p>',
+									'icon': 'china'
+									},
+									
+									'geometry': {
+									'type': 'Point',
+									'coordinates': [4.89, 52.37] 
+									}
+								}]
+							}
+							},
+							'layout': {
+							'icon-image': 'netherlands',
+							'icon-size': 0.10
+							}
+						});
+					}
+				);
+			});
+		
+				// When a click event occurs on a feature in the places layer, open a popup at the
+				// location of the feature, with description HTML from its properties.
+				map.on('click', 'points11', function(e) {
+				var coordinates = e.features[0].geometry.coordinates.slice();
+				var description = e.features[0].properties.description;
+
+				// Ensure that if the map is zoomed out such that multiple
+				// copies of the feature are visible, the popup appears
+				// over the copy being pointed to.
+				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+				}
+
+				new mapboxgl.Popup()
+				.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo(map);
+				});
+
+				// Change the cursor to a pointer when the mouse is over the places layer.
+				map.on('mouseenter', 'points11', function() {
+				map.getCanvas().style.cursor = 'pointer';
+				});
+
+				// Change it back to a pointer when it leaves.
+				map.on('mouseleave', 'points11', function() {
+				map.getCanvas().style.cursor = '';
+				});
+		
+		
+	</script>
+</html>
+
